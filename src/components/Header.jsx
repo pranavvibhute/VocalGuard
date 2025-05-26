@@ -1,28 +1,49 @@
-export default function Header() {
-  return (
-    <header className='fixed top-0 left-0 w-full flex items-center justify-between py-4 bg-gray-900 bg-opacity-85 text-white '>
-      <h1 className='text-4xl font-bold mx-4'>VocalGuard</h1>
-      <nav className='space-x-4 mr-5'>
-      <a
-  href="#how"
-  className="p-2 font-medium rounded transition duration-300 hover:text-green-400 hover:shadow-[0_0_10px_#22c55e,0_0_20px_#22c55e] hover:outline-none"
->
-  How It Works
-</a>
-<a
-  href="#features"
-  className="p-2 font-medium rounded transition duration-300 hover:text-green-400 hover:shadow-[0_0_10px_#22c55e,0_0_20px_#22c55e] hover:outline-none"
->
-  Features
-</a>
-<a
-  href="#try"
-  className="p-2 font-medium rounded transition duration-300 hover:text-green-400 hover:shadow-[0_0_10px_#22c55e,0_0_20px_#22c55e] hover:outline-none"
->
-  Try Demo
-</a>
+import { useState } from "react";
+import { Menu, X } from "lucide-react"; // You can install lucide-react for icons
 
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between py-4 px-6 bg-gray-900 bg-opacity-85 text-white shadow-md">
+      <h1 className="text-3xl font-bold">VocalGuard</h1>
+
+      {/* Desktop Navigation */}
+      <nav className="hidden md:flex space-x-4">
+        <NavLink href="#how">How It Works</NavLink>
+        <NavLink href="#features">Features</NavLink>
+        <NavLink href="#try">Try Demo</NavLink>
       </nav>
+
+      {/* Mobile Menu Toggle */}
+      <button
+        className="md:hidden text-white"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle menu"
+      >
+        {menuOpen ? <X size={28} /> : <Menu size={28} />}
+      </button>
+
+      {/* Mobile Navigation Drawer */}
+      {menuOpen && (
+        <div className="absolute top-full left-0 w-full bg-gray-900 text-white flex flex-col items-center py-4 space-y-2 md:hidden shadow-lg z-40">
+          <NavLink href="#how" onClick={() => setMenuOpen(false)}>How It Works</NavLink>
+          <NavLink href="#features" onClick={() => setMenuOpen(false)}>Features</NavLink>
+          <NavLink href="#try" onClick={() => setMenuOpen(false)}>Try Demo</NavLink>
+        </div>
+      )}
     </header>
+  );
+}
+
+function NavLink({ href, children, onClick }) {
+  return (
+    <a
+      href={href}
+      onClick={onClick}
+      className="p-2 font-medium rounded transition duration-300 hover:text-green-400 hover:shadow-[0_0_10px_#22c55e,0_0_20px_#22c55e]"
+    >
+      {children}
+    </a>
   );
 }
